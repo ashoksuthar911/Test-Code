@@ -112,7 +112,7 @@ for node in "${node_list[@]}"; do
 		fi
 	fi
 	if ssh "$node" "grep -iq '7..' /etc/oracle-release"; then
-		echo "Gluster packages on $node are available." | tee -a $glusterchecks
+		echo "Gluster packages are compatiable for $node with OL 7.X." | tee -a $glusterchecks
 		echo "Current OL version on $node" >> $glusterchecks
 		ssh $node "cat /etc/oracle-release" >> $glusterchecks
 		echo -e "\n**********************************************************************************************\n" >> $glusterchecks
