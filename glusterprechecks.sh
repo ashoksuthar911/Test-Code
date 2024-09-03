@@ -120,7 +120,7 @@ for node in "${node_list[@]}"; do
 		echo "Current OL version on $node" >> $glusterchecks
 		ssh $node "cat /etc/oracle-release" >> $glusterchecks
 		echo -e "\n**********************************************************************************************\n" >> $glusterchecks
-		echo "Cannot proceed with upgrade, Gluster packages are only available for OL 7.X" | tee -a $glusterchecks
+		echo "Cannot proceed with upgrade on $node as Gluster packages are only available for OL 7.X" | tee -a $glusterchecks
 	fi
 	echo "Checking and installing required packages on $node" >> $glusterchecks
 	echo "------------------------------------------------------------------------------------------" >> $glusterchecks
