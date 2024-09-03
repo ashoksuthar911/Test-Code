@@ -108,7 +108,7 @@ for node in "${node_list[@]}"; do
 				echo "Gluster version on $node is already on V8. No upgrade required." | tee -a $glusterchecks
 			fi
 		fi	
-		if [[ `grep -i 7.. /etc/oracle-release` ]]; then
+		if [[ `ssh $node "grep -i 7.. /etc/oracle-release" ]]; then
 			echo "You can proceed with the upgrade on $node, as packages are available." | tee -a $glusterchecks
 			echo "Current OL version on $node" >> $glusterchecks
 			ssh $node "cat /etc/oracle-release" >> $glusterchecks
