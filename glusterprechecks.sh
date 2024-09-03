@@ -136,4 +136,4 @@ for node in "${node_list[@]}"; do
 done
 
 # Send the log file via email
-echo "Test done, Please check your Email" | mailx -s "Gluster Health checks are complete" -a $glusterchecks $email_arg
+echo "Test done, Please check the attached file." | mailx -s "Gluster Health checks are complete" -a $glusterchecks $email_arg
