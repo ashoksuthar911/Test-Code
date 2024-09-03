@@ -109,30 +109,30 @@ for node in "${node_list[@]}"; do
 			else
 				glstrnode
 			fi
-		fi	
-		if [[ `ssh $node "grep -i 7.. /etc/oracle-release"` ]]; then
-			echo "Gluster packages on $node are available." | tee -a $glusterchecks
-			echo "Current OL version on $node" >> $glusterchecks
-			ssh $node "cat /etc/oracle-release" >> $glusterchecks
-			echo -e "\n**********************************************************************************************\n" >> $glusterchecks
-		else
-			echo "Current OL version on $node" >> $glusterchecks
-			ssh $node "cat /etc/oracle-release" >> $glusterchecks
-			echo -e "\n**********************************************************************************************\n" >> $glusterchecks
-			echo "Cannot proceed with upgrade, Gluster packages are only available for OL 7.X" | tee -a $glusterchecks
 		fi
 	fi
-			echo "Checking and installing required packages on $node" >> $glusterchecks
-			echo "------------------------------------------------------------------------------------------" >> $glusterchecks
-			ssh $node "yum -y install yum-utils" >> $glusterchecks 2>&1
-			echo -e "\n**********************************************************************************************\n" >> $glusterchecks
-			ssh $node "rpm -qa | grep -i gluster" >> $glusterchecks 2>&1
-			echo -e "\n**********************************************************************************************\n" >> $glusterchecks
-		
-			echo "Checking Enabled Repos on $node" >> $glusterchecks
-			echo "------------------------------------------------------------------------------------------" >> $glusterchecks
-			ssh $node "yum repoinfo enabled | grep -i gluster" >> $glusterchecks 2>&1
-			echo -e "\n**********************************************************************************************\n" >> $glusterchecks
+	if [[ `ssh $node "grep -i 7.. /etc/oracle-release"` ]]; then
+		echo "Gluster packages on $node are available." | tee -a $glusterchecks
+		echo "Current OL version on $node" >> $glusterchecks
+		ssh $node "cat /etc/oracle-release" >> $glusterchecks
+		echo -e "\n**********************************************************************************************\n" >> $glusterchecks
+	else
+		echo "Current OL version on $node" >> $glusterchecks
+		ssh $node "cat /etc/oracle-release" >> $glusterchecks
+		echo -e "\n**********************************************************************************************\n" >> $glusterchecks
+		echo "Cannot proceed with upgrade, Gluster packages are only available for OL 7.X" | tee -a $glusterchecks
+	fi
+	echo "Checking and installing required packages on $node" >> $glusterchecks
+	echo "------------------------------------------------------------------------------------------" >> $glusterchecks
+	ssh $node "yum -y install yum-utils" >> $glusterchecks 2>&1
+	echo -e "\n**********************************************************************************************\n" >> $glusterchecks
+	ssh $node "rpm -qa | grep -i gluster" >> $glusterchecks 2>&1
+	echo -e "\n**********************************************************************************************\n" >> $glusterchecks
+	
+	echo "Checking Enabled Repos on $node" >> $glusterchecks
+	echo "------------------------------------------------------------------------------------------" >> $glusterchecks
+	ssh $node "yum repoinfo enabled | grep -i gluster" >> $glusterchecks 2>&1
+	echo -e "\n**********************************************************************************************\n" >> $glusterchecks
 done
 
 # Send the log file via email
