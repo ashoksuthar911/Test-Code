@@ -104,11 +104,13 @@ for node in "${node_list[@]}"; do
             echo "This node does not have Gluster installed, Script will exit now!"| tee -a $glusterchecks
 			exit 1
         else
-			if [[ `gluster volume get all cluster.max-op-version|cut -f 1|grep 80000` ]]; then
+			if [[ `ssh $node "gluster volume get all cluster.max-op-version|cut -f 1|grep 80000"` ]]; then
 				echo "Gluster version on $node is already on V8. No upgrade required." | tee -a $glusterchecks
+			else
+				glstrnode
 			fi
 		fi	
-		if [[ `ssh $node "grep -i 7.. /etc/oracle-release" ]]; then
+		if [[ `ssh $node "grep -i 7.. /etc/oracle-release"` ]]; then
 			echo "You can proceed with the upgrade on $node, as packages are available." | tee -a $glusterchecks
 			echo "Current OL version on $node" >> $glusterchecks
 			ssh $node "cat /etc/oracle-release" >> $glusterchecks
@@ -119,6 +121,7 @@ for node in "${node_list[@]}"; do
 			echo -e "\n**********************************************************************************************\n" >> $glusterchecks
 			echo "Cannot proceed with upgrade, Gluster packages are only available for OL 7.X" | tee -a $glusterchecks
 		fi
+	fi
 			echo "Checking and installing required packages on $node" >> $glusterchecks
 			echo "------------------------------------------------------------------------------------------" >> $glusterchecks
 			ssh $node "yum -y install yum-utils" >> $glusterchecks 2>&1
@@ -130,8 +133,6 @@ for node in "${node_list[@]}"; do
 			echo "------------------------------------------------------------------------------------------" >> $glusterchecks
 			ssh $node "yum repoinfo enabled | grep -i gluster" >> $glusterchecks 2>&1
 			echo -e "\n**********************************************************************************************\n" >> $glusterchecks
-			glstrnode
-    fi
 done
 
 # Send the log file via email
