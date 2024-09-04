@@ -107,7 +107,8 @@ for node in "${node_list[@]}"; do
 			if ssh "$node" "gluster volume get all cluster.max-op-version | grep -q '80000'"; then
 				echo "Gluster version on $node is already on V8. No upgrade required." | tee -a $glusterchecks
 			else
-				glstrnode
+				echo "Gluster upgrade is needed on $node." | tee -a $glusterchecks
+    				glstrnode
 			fi
 		fi
 	fi
