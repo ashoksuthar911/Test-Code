@@ -72,6 +72,7 @@ glstrnode() {
     echo -e "\n**********************************************************************************************\n\n" >> $glusterchecks
     ssh $node 'bash -c "for i in \$(gluster volume list); do gluster volume heal \$i info; done"' >> $glusterchecks
     echo -e "\n**********************************************************************************************\n\n" >> $glusterchecks
+    echo "Please perform the SNAPSHOT for $node, before proceeding for the upgrade!" | tee -a $glusterchecks
 }
 
 # Parse command-line arguments
