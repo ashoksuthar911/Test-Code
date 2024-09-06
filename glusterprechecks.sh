@@ -102,18 +102,18 @@ IFS=',' read -r -a node_list <<< "$nodes_arg"
 for node in "${node_list[@]}"; do
     if [[ "$node" == *glstr* || "$node" == *nfs* ]]; then
         if [[ -z "$(ssh $node "rpm -qa | grep -i gluster")" ]]; then
-            echo "This node does not have Gluster installed, Script will exit now!"| tee -a $glusterchecks
-			exit 1
+        	echo "This node does not have Gluster installed, Script will exit now!"| tee -a $glusterchecks
+		exit 1
         else
-			if ssh "$node" "gluster volume get all cluster.max-op-version | grep -q '80000'"; then
-				echo "Gluster version on $node is already on V8. No upgrade required." | tee -a $glusterchecks
-      				echo -e "\n**********************************************************************************************\n" | tee -a $glusterchecks
-			else
-				echo "Gluster upgrade is needed on $node." | tee -a $glusterchecks
-      				echo -e "\n**********************************************************************************************\n" | tee -a $glusterchecks
-    				glstrnode
-			fi
+		if ssh "$node" "gluster volume get all cluster.max-op-version | grep -q '80000'"; then
+			echo "Gluster version on $node is already on V8. No upgrade required." | tee -a $glusterchecks
+      			echo -e "\n**********************************************************************************************\n" | tee -a $glusterchecks
+		else
+			echo "Gluster upgrade is needed on $node." | tee -a $glusterchecks
+      			echo -e "\n**********************************************************************************************\n" | tee -a $glusterchecks
+    			glstrnode
 		fi
+	    fi
 	fi
 	if ssh "$node" "grep -iq '7..' /etc/oracle-release"; then
 		echo "Gluster packages are compatiable for $node with OL 7.X." | tee -a $glusterchecks
