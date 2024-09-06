@@ -69,6 +69,7 @@ glstrnode() {
     ssh $node 'bash -c "for i in \$(gluster volume list); do gluster volume heal \$i info; done"' >> $glusterchecks
     echo -e "\n**********************************************************************************************\n\n" >> $glusterchecks
     echo "Please perform the SNAPSHOT for $node, before proceeding for the upgrade!" | tee -a $glusterchecks
+    echo -e "\n**********************************************************************************************\n" | tee -a $glusterchecks
 }
 
 # Parse command-line arguments
@@ -112,6 +113,7 @@ for node in "${node_list[@]}"; do
 	    fi
 	fi
 	if ssh "$node" "grep -iq '7..' /etc/oracle-release"; then
+		echo -e "\n**********************************************************************************************\n" | tee -a $glusterchecks
 		echo "Gluster packages are compatiable for $node with OL 7.X." | tee -a $glusterchecks
   		echo -e "\n**********************************************************************************************\n" | tee -a $glusterchecks
 		echo "Current OL version on $node" >> $glusterchecks
@@ -122,6 +124,7 @@ for node in "${node_list[@]}"; do
 		ssh $node "cat /etc/oracle-release" >> $glusterchecks
 		echo -e "\n**********************************************************************************************\n" >> $glusterchecks
 		echo "Cannot proceed with upgrade on $node as Gluster packages are only available for OL 7.X" | tee -a $glusterchecks
+  		echo -e "\n**********************************************************************************************\n" | tee -a $glusterchecks
 	fi
 	echo "Checking and installing required packages on $node" >> $glusterchecks
 	echo "------------------------------------------------------------------------------------------" >> $glusterchecks
