@@ -21,10 +21,6 @@ usage() {
 
 # Function to perform commands on gluster nodes
 glstrnode() {
-    echo "Enabling Repos on $node" >> $glusterchecks
-    echo "------------------------------------------------------------------------------------------" >> $glusterchecks
-    ssh $node "yum-config-manager --disable \*gluster\*" 2&> /dev/null
-    ssh $node "yum-config-manager --enable \*gluster8\*" 2&> /dev/null
     ssh $node "yum repoinfo enabled | grep -i gluster" >> $glusterchecks
     echo -e "\n**********************************************************************************************\n\n" >> $glusterchecks
 
