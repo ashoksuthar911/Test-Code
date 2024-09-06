@@ -107,14 +107,17 @@ for node in "${node_list[@]}"; do
         else
 			if ssh "$node" "gluster volume get all cluster.max-op-version | grep -q '80000'"; then
 				echo "Gluster version on $node is already on V8. No upgrade required." | tee -a $glusterchecks
+      				echo -e "\n**********************************************************************************************\n" | tee -a $glusterchecks
 			else
 				echo "Gluster upgrade is needed on $node." | tee -a $glusterchecks
+      				echo -e "\n**********************************************************************************************\n" | tee -a $glusterchecks
     				glstrnode
 			fi
 		fi
 	fi
 	if ssh "$node" "grep -iq '7..' /etc/oracle-release"; then
 		echo "Gluster packages are compatiable for $node with OL 7.X." | tee -a $glusterchecks
+  		echo -e "\n**********************************************************************************************\n" | tee -a $glusterchecks
 		echo "Current OL version on $node" >> $glusterchecks
 		ssh $node "cat /etc/oracle-release" >> $glusterchecks
 		echo -e "\n**********************************************************************************************\n" >> $glusterchecks
