@@ -23,7 +23,7 @@ usage() {
 glstrnode() {
     ssh $node "yum repoinfo enabled | grep -i gluster" >> $glusterchecks
     echo -e "\n**********************************************************************************************\n\n" >> $glusterchecks
-
+    
     echo "Printing OpVersion of connected Gluster Clients" >> $glusterchecks
     echo "------------------------------------------------------------------------------------------" >> $glusterchecks
     for vol in $(gluster volume list); do
