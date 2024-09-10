@@ -67,9 +67,9 @@ glstrnode() {
     ssh $node 'bash -c "for i in \$(gluster volume list); do gluster volume heal \$i; done"' >> $glusterchecks
     echo -e "\n**********************************************************************************************\n\n" >> $glusterchecks
     ssh $node 'bash -c "for i in \$(gluster volume list); do gluster volume heal \$i info; done"' >> $glusterchecks
-    echo -e "\n**********************************************************************************************\n\n" >> $glusterchecks
+    echo -e "**********************************************************************************************\n\n" >> $glusterchecks
     echo "Please perform the SNAPSHOT for $node, before proceeding for the upgrade!" | tee -a $glusterchecks
-    echo -e "\n**********************************************************************************************\n" | tee -a $glusterchecks
+    echo -e "**********************************************************************************************\n" | tee -a $glusterchecks
 }
 
 # Parse command-line arguments
@@ -104,39 +104,39 @@ for node in "${node_list[@]}"; do
         else
 		if ssh "$node" "gluster volume get all cluster.max-op-version | grep -q '80000'"; then
 			echo "Gluster version on $node is already on V8. No upgrade required." | tee -a $glusterchecks
-      			echo -e "\n**********************************************************************************************\n" | tee -a $glusterchecks
+      			echo -e "**********************************************************************************************\n" | tee -a $glusterchecks
 		else
 			echo "Gluster upgrade is needed on $node." | tee -a $glusterchecks
-      			echo -e "\n**********************************************************************************************\n" | tee -a $glusterchecks
+      			echo -e "**********************************************************************************************\n" | tee -a $glusterchecks
     			glstrnode
 		fi
 	    fi
 	fi
 	if ssh "$node" "grep -iq '7..' /etc/oracle-release"; then
-		echo -e "\n**********************************************************************************************\n" | tee -a $glusterchecks
+		echo -e "**********************************************************************************************\n" | tee -a $glusterchecks
 		echo "Gluster packages are compatiable for $node with OL 7.X." | tee -a $glusterchecks
-  		echo -e "\n**********************************************************************************************\n" | tee -a $glusterchecks
+  		echo -e "**********************************************************************************************\n" | tee -a $glusterchecks
 		echo "Current OL version on $node" >> $glusterchecks
 		ssh $node "cat /etc/oracle-release" >> $glusterchecks
-		echo -e "\n**********************************************************************************************\n" >> $glusterchecks
+		echo -e "**********************************************************************************************\n" >> $glusterchecks
 	else
 		echo "Current OL version on $node" >> $glusterchecks
 		ssh $node "cat /etc/oracle-release" >> $glusterchecks
-		echo -e "\n**********************************************************************************************\n" >> $glusterchecks
+		echo -e "**********************************************************************************************\n" >> $glusterchecks
 		echo "Cannot proceed with upgrade on $node as Gluster packages are only available for OL 7.X" | tee -a $glusterchecks
-  		echo -e "\n**********************************************************************************************\n" | tee -a $glusterchecks
+  		echo -e "**********************************************************************************************\n" | tee -a $glusterchecks
 	fi
 	echo "Checking and installing required packages on $node" >> $glusterchecks
 	echo "------------------------------------------------------------------------------------------" >> $glusterchecks
 	ssh $node "yum -y install yum-utils" >> $glusterchecks 2>&1
-	echo -e "\n**********************************************************************************************\n" >> $glusterchecks
+	echo -e "**********************************************************************************************\n" >> $glusterchecks
 	ssh $node "rpm -qa | grep -i gluster" >> $glusterchecks 2>&1
-	echo -e "\n**********************************************************************************************\n" >> $glusterchecks
+	echo -e "**********************************************************************************************\n" >> $glusterchecks
 	
 	echo "Checking Enabled Repos on $node" >> $glusterchecks
 	echo "------------------------------------------------------------------------------------------" >> $glusterchecks
 	ssh $node "yum repoinfo enabled | grep -i gluster" >> $glusterchecks 2>&1
-	echo -e "\n**********************************************************************************************\n" >> $glusterchecks
+	echo -e "**********************************************************************************************\n" >> $glusterchecks
 done
 
 # Send the log file via email
